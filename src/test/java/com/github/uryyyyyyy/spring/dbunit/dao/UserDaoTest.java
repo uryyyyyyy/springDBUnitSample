@@ -4,14 +4,20 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+@ComponentScan
+@Configuration
 public class UserDaoTest {
 
 	private EmbeddedDatabase db;
+
+    @Autowired
 	UserDao userDao;
 
 	@Before
@@ -19,8 +25,8 @@ public class UserDaoTest {
 		//db = new EmbeddedDatabaseBuilder().addDefaultScripts().build();
 		db = new EmbeddedDatabaseBuilder()
 				.setType(EmbeddedDatabaseType.H2)
-				.addScript("db/sql/create-db.sql")
-				.addScript("db/sql/insert-data.sql")
+				.addScript("create-db.sql")
+				.addScript("insert-data.sql")
 				.build();
 	}
 

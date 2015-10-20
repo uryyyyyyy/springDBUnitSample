@@ -1,21 +1,23 @@
 package com.github.uryyyyyyy.spring.dbunit.dao;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserDaoImpl implements UserDao{
 
-	private NamedParameterJdbcTemplate template;
+    private JdbcTemplate jdbcTemplate;
 
-	@Override
-	public void setNamedParameterJdbcTemplate(DataSource dataSource) {
-		this.template = new NamedParameterJdbcTemplate(dataSource);
-	}
+    @Override
+    public void setNamedParameterJdbcTemplate(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
-	@Override
-	public User findByName(String name) {
-		return template.queryForObject("select * from table_name where name = ?", name, User.class);
-	}
+    @Override
+    public User findByName(String name) {
+        return jdbcTemplate.queryForObject("SELECT name FROM users where name = ?",
+                BeanPropertyRowMapper
+                        .newInstance(User.class), name);
+    }
 }
